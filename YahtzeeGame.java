@@ -1,7 +1,5 @@
 package YahtzeeGame;
 
-import javafx.scene.layout.Pane;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.applet.*;
@@ -15,9 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class YahtzeeGame extends Applet {
-	
+ 
     JButton dice1, dice2, dice3, dice4, dice5;
     int timesPressed = 0;
     ImageIcon d1, d2, d3, d4, d5, d6;
@@ -32,9 +29,12 @@ public class YahtzeeGame extends Applet {
     private ArrayList<Integer> lowerSectionTotal2 = new ArrayList<Integer>();
     private ArrayList<Integer> diceFaces = new ArrayList<Integer>();
     Panel p1, p2;
+    JButton rollDice;
+    JLabel rollsLeft;
+    JLabel player1, player2;
     
     public void init() {
-        d1 = new ImageIcon("//Users//ayeshanabiha//eclipse-workspace//GraphicsProjects//bin//dice1.png");
+    	d1 = new ImageIcon("//Users//ayeshanabiha//eclipse-workspace//GraphicsProjects//bin//dice1.png");
         d2 = new ImageIcon("//Users//ayeshanabiha//eclipse-workspace//GraphicsProjects//bin//dice2.png");
         d3 = new ImageIcon("//Users//ayeshanabiha//eclipse-workspace//GraphicsProjects//bin//dice3.png");
         d4 = new ImageIcon("//Users//ayeshanabiha//eclipse-workspace//GraphicsProjects//bin//dice4.png");
@@ -52,8 +52,7 @@ public class YahtzeeGame extends Applet {
         setLayout(new BorderLayout());
         setBackground(new Color(113, 121, 45));
         setSize(800, 800);
-        
-
+       
         //creates a panel that will contain the dice
         Panel dicePanel = new Panel();
         //creates buttons that will represent the dice and sets them to a size of 100x100
@@ -63,7 +62,6 @@ public class YahtzeeGame extends Applet {
         dice1.setContentAreaFilled(false);
         dice1.setBorderPainted(false);
         dice1.setFocusPainted(false);
-
         dice2 = new JButton(new ImageIcon(d2.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
         dice2.setPreferredSize(new Dimension(100, 100));
         dice2.setOpaque(false);
@@ -84,7 +82,6 @@ public class YahtzeeGame extends Applet {
         dice4.setContentAreaFilled(false);
         dice4.setBorderPainted(false);
         dice4.setFocusPainted(false);
-
         dice5 = new JButton(new ImageIcon(d5.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
         dice5.setPreferredSize(new Dimension(100, 100));
         dice5.setOpaque(false);
@@ -104,19 +101,25 @@ public class YahtzeeGame extends Applet {
         dicePanel.add(dice3);
         dicePanel.add(dice4);
         dicePanel.add(dice5);
+        
+     
         //adds panel to applet
         add(dicePanel, BorderLayout.NORTH);
-
+     
         Panel lowerPanel = new Panel();
         lowerPanel.setLayout(new BorderLayout());
         Panel rollPanel = new Panel();
-        JButton rollDice = new JButton("Roll Dice");
+        rollDice = new JButton("Roll Dice");
+        rollsLeft = new JLabel("Times Rolled: " + timesPressed);
+        rollsLeft.setForeground(Color.white);
+        rollsLeft.setFont(new Font("Monospaced", Font.PLAIN, 14));
         rollDice.setPreferredSize(new Dimension(100, 50));
         rollDice.setFont(new Font("Monospaced", Font.PLAIN, 12));
         rollDice.addActionListener(new DiceRoll());
         rollPanel.add(rollDice);
+        rollPanel.add(rollsLeft);
         lowerPanel.add(rollPanel, BorderLayout.NORTH);
-
+       
         //creates a panel that contains the categories that a player can choose
         Panel categories = new Panel();
         categories.setLayout(new GridLayout(0, 1));
@@ -132,7 +135,7 @@ public class YahtzeeGame extends Applet {
         aces.setFont(new Font("Monospaced", Font.PLAIN, 14));
         JLabel twos = new JLabel("Twos");
         twos.setForeground(Color.white);
-        aces.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        twos.setFont(new Font("Monospaced", Font.PLAIN, 14));
         JLabel threes = new JLabel("Threes");
         threes.setForeground(Color.white);
         threes.setFont(new Font("Monospaced", Font.PLAIN, 14));
@@ -198,15 +201,14 @@ public class YahtzeeGame extends Applet {
         categories.add(yahtzeeBonus);
         categories.add(totalSum);
         lowerPanel.add(categories, BorderLayout.WEST);
-
         //creates a panel that will contain the scores of the players
         Panel playerScores = new Panel();
         playerScores.setLayout(new GridLayout(0, 2));
         //creates panels for player 1 and player 2
         p1 = new Panel();
         p1.setLayout(new GridLayout(0, 1));
-        JLabel player1 = new JLabel("Player 1", SwingConstants.CENTER);
-        player1.setForeground(Color.white);
+        player1 = new JLabel("Player 1", SwingConstants.CENTER);
+        player1.setForeground(new Color(133,33,36));
         player1.setFont(new Font("Monospaced", Font.BOLD, 12));
         p1.add(player1);
         aces1 = new JButton();
@@ -278,7 +280,7 @@ public class YahtzeeGame extends Applet {
         
         p2 = new Panel();
         p2.setLayout(new GridLayout(0, 1));
-        JLabel player2 = new JLabel("Player 2", SwingConstants.CENTER);
+        player2 = new JLabel("Player 2", SwingConstants.CENTER);
         player2.setForeground(Color.white);
         player2.setFont(new Font("Monospaced", Font.BOLD, 12));
         p2.add(player2);
@@ -365,561 +367,676 @@ public class YahtzeeGame extends Applet {
    
     private class HoldDice implements ActionListener {
         private String diceRoll;
-
         public HoldDice(String diceRoll) {
             this.diceRoll = diceRoll;
         }
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (diceRoll == "dice1") {
-            	dice1.setEnabled(false);
+             dice1.setEnabled(false);
             } else if (diceRoll == "dice2") {
-            	dice2.setEnabled(false);
+             dice2.setEnabled(false);
             } else if (diceRoll == "dice3") {
-            	dice3.setEnabled(false);
+             dice3.setEnabled(false);
             } else if (diceRoll == "dice4") {
-            	dice4.setEnabled(false);
+             dice4.setEnabled(false);
             } else if (diceRoll == "dice5") {
-            	dice5.setEnabled(false);
-
+             dice5.setEnabled(false);
             }
         }
     }
-
     private class DiceRoll implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Random rand = new Random();
+            
+            
             if(timesPressed < 3) {
-            	if(dice1.isEnabled()) {
-            		die1 = rand.nextInt(6);
-            	}
-            	if(dice2.isEnabled()) {
-            		die2 = rand.nextInt(6);
-            	}
-            	if(dice3.isEnabled()) {
-            		die3 = rand.nextInt(6);
-            	}
-            	if(dice4.isEnabled()) {
-            		die4 = rand.nextInt(6);
-            	}
-            	if(dice5.isEnabled()) {
-            		die5 = rand.nextInt(6);
-            	}
-                
-            	diceFaces.clear();
-            	
-            		diceFaces.add(die1+1);
-            		diceFaces.add(die2+1);
-            		diceFaces.add(die3+1);
-            		diceFaces.add(die4+1);
-            		diceFaces.add(die5+1);
-           
-                
-                if(dice1.isEnabled()) {
-                	dice1.setIcon(new ImageIcon(diceImages[die1].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+            	rollDice();
+            	timesPressed++;
+            	rollsLeft.setText("Times Rolled: " +  timesPressed); 
+              if(timesPressed==3){
+                 rollDice.setEnabled(false);
+                }
+              
+            }
+        }
+        
+        public void rollDice() {
+        	Random rand = new Random();
+        	if(dice1.isEnabled()) {
+                die1 = rand.nextInt(6);
                 }
                 if(dice2.isEnabled()) {
-                	dice2.setIcon(new ImageIcon(diceImages[die2].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                die2 = rand.nextInt(6);
                 }
-                if(dice3.isEnabled()){
-                	dice3.setIcon(new ImageIcon(diceImages[die3].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                if(dice3.isEnabled()) {
+                die3 = rand.nextInt(6);
                 }
                 if(dice4.isEnabled()) {
-                	dice4.setIcon(new ImageIcon(diceImages[die4].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                die4 = rand.nextInt(6);
                 }
-                if(dice5.isEnabled()){
-                dice5.setIcon(new ImageIcon(diceImages[die5].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                if(dice5.isEnabled()) {
+                die5 = rand.nextInt(6);
                 }
-                timesPressed++;
-                dice1.setEnabled(true);
-                dice2.setEnabled(true);
-                dice3.setEnabled(true);
-                dice4.setEnabled(true);
-                dice5.setEnabled(true);
-            }else{
-                JOptionPane.showMessageDialog(null, "You have already rolled the maximum number of times (3) per turn. You must pick a category.", "Maximum Rolls Reached", 1);
-                timesPressed = 0;
-            }
-
+                   
+                diceFaces.clear();
+                
+                diceFaces.add(die1+1);
+                diceFaces.add(die2+1);
+                diceFaces.add(die3+1);
+                diceFaces.add(die4+1);
+                diceFaces.add(die5+1);
+              
+                   
+                   if(dice1.isEnabled()) {
+                    dice1.setIcon(new ImageIcon(diceImages[die1].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                   }
+                   if(dice2.isEnabled()) {
+                    dice2.setIcon(new ImageIcon(diceImages[die2].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                   }
+                   if(dice3.isEnabled()){
+                    dice3.setIcon(new ImageIcon(diceImages[die3].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                   }
+                   if(dice4.isEnabled()) {
+                    dice4.setIcon(new ImageIcon(diceImages[die4].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                   }
+                   if(dice5.isEnabled()){
+                   dice5.setIcon(new ImageIcon(diceImages[die5].getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                   }
+                   dice1.setEnabled(true);
+                   dice2.setEnabled(true);
+                   dice3.setEnabled(true);
+                   dice4.setEnabled(true);
+                   dice5.setEnabled(true);
+        	
         }
     }
     
     private class HelpButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JOptionPane helpMenu = new JOptionPane();
-			helpMenu.showMessageDialog(null, "The Rules of Yahtzee", "Help", 1);
-			helpMenu.setVisible(true);
-			helpMenu.setSize(800,600);
-			helpMenu.setVisible(true);
-		}	
+ @Override
+ public void actionPerformed(ActionEvent e) {
+ JOptionPane helpMenu = new JOptionPane();
+ helpMenu.showMessageDialog(null, "The Rules of Yahtzee", "Help", 1);
+ helpMenu.setVisible(true);
+ helpMenu.setSize(800,600);
+ helpMenu.setVisible(true);
+ } 
     }
     
     private class CategoryScore implements ActionListener{
-    	private String category;
-    	private int yahtzeeTimes1 = 0;
-    	private int yahtzeeTimes2 = 0;
-    	int playerOneScore = 0;
-    	int playerTwoScore = 0;
-    	boolean selectedCategory1 = false;
-    	boolean selectedCategory2 = false;
-    	
+     private String category;
+     private int yahtzeeTimes1 = 0;
+     private int yahtzeeTimes2 = 0;
+     int playerOneScore = 0;
+     int playerTwoScore = 0;
+     boolean selectedCategory1 = false;
+     boolean selectedCategory2 = false;
+     
  
-
         public CategoryScore(String category) {
             this.category = category;
         }
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			if(category.equals("aces1") || category.equals("aces2")){
-				int sumToDisplay = 0;
-				if(category.equals("aces1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 1) {
-			        		  sumToDisplay++;
-			        	  }
-			          }
-			          aces1.setText(Integer.toString(sumToDisplay));
-			          aces1.setEnabled(false);
-			          selectedCategory1 = true;
-			          selectedCategory2 = false;
-			          upperSectionTotal1.add(sumToDisplay);
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 1) {
-			        		  sumToDisplay++;
-			        	  }
-					}
-		          aces2.setText(Integer.toString(sumToDisplay));
-		          upperSectionTotal2.add(sumToDisplay);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-		          aces2.setEnabled(false);
-				}
-			}else if(category.equals("twos1") || category.equals("twos2")) {
-				int sumToDisplay = 0;
-				if(category.equals("twos1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 2) {
-			        		  sumToDisplay += 2;
-			        	  }
-			          }
-			     twos1.setText(Integer.toString(sumToDisplay));
-			     twos1.setEnabled(false);
-			     upperSectionTotal1.add(sumToDisplay);
-			     selectedCategory1 = true;
-		         selectedCategory2 = false;
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 2) {
-			        		  sumToDisplay += 2;
-			        	  }
-					}
-		          twos2.setText(Integer.toString(sumToDisplay));
-		          upperSectionTotal2.add(sumToDisplay);
-		          twos2.setEnabled(false);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-				}
-			}else if(category.equals("threes1") || category.equals("threes2")) {
-				int sumToDisplay = 0;
-				if(category.equals("threes1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 3) {
-			        		  sumToDisplay += 3;
-			        	  }
-			          }
-			     threes1.setText(Integer.toString(sumToDisplay));
-			     threes1.setEnabled(false);
-			     upperSectionTotal1.add(sumToDisplay);
-			     selectedCategory1 = true;
-		         selectedCategory2 = false;
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 3) {
-			        		  sumToDisplay += 3;
-			        	  }
-					}
-		          threes2.setText(Integer.toString(sumToDisplay));
-		          threes2.setEnabled(false);
-		          upperSectionTotal2.add(sumToDisplay);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-				}
-			}else if(category.equals("fours1") || category.equals("fours2")) {
-				int sumToDisplay = 0;
-				if(category.equals("fours1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 4) {
-			        		  sumToDisplay += 4;
-			        	  }
-			          }
-			     fours1.setText(Integer.toString(sumToDisplay));
-			     fours1.setEnabled(false);
-			     upperSectionTotal1.add(sumToDisplay);
-			     selectedCategory1 = true;
-		         selectedCategory2 = false;
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 4) {
-			        		  sumToDisplay += 4;
-			        	  }
-					}
-		          fours2.setText(Integer.toString(sumToDisplay));
-		          fours2.setEnabled(false);
-		          upperSectionTotal2.add(sumToDisplay);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-				}
-			}else if(category.equals("fives1") || category.equals("fives2")) {
-				int sumToDisplay = 0;
-				if(category.equals("fives1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 5) {
-			        		  sumToDisplay += 5;
-			        	  }
-			          }
-			     fives1.setText(Integer.toString(sumToDisplay));
-			     fives1.setEnabled(false);
-			     upperSectionTotal1.add(sumToDisplay);
-			     selectedCategory1 = true;
-		         selectedCategory2 = false;
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 5) {
-			        		  sumToDisplay += 5;
-			        	  }
-					}
-		          fives2.setText(Integer.toString(sumToDisplay));
-		          fives2.setEnabled(false);
-		          upperSectionTotal2.add(sumToDisplay);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-				}
-			}else if(category.equals("sixes1") || category.equals("sixes2")) {
-				int sumToDisplay = 0;
-				if(category.equals("sixes1")){
-			          for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 6) {
-			        		  sumToDisplay += 6;
-			        	  }
-			          }
-			     sixes1.setText(Integer.toString(sumToDisplay));
-			     sixes1.setEnabled(false);
-			     upperSectionTotal1.add(sumToDisplay);
-			     selectedCategory1 = true;
-		         selectedCategory2 = false;
-				}else {
-					for(int i = 0; i < diceFaces.size(); i++) {
-			        	  if(diceFaces.get(i) == 6) {
-			        		  sumToDisplay += 6;
-			        	  }
-					}
-		          sixes2.setText(Integer.toString(sumToDisplay));
-		          sixes2.setEnabled(false);
-		          upperSectionTotal2.add(sumToDisplay);
-		          selectedCategory1 = false;
-		          selectedCategory2 = true;
-				}	
-			}else if(category.equals("threeOfAKind1") || category.equals("threeOfAKind2")) {
-			 if(category.equals("threeOfAKind1")) {
-				threeOfAKind1.setText(Integer.toString(100));
-	             threeOfAKind1.setEnabled(false); 
-	         
-	           
-	         }else {
-	        	 threeOfAKind2.setText(Integer.toString(100));
-	             threeOfAKind2.setEnabled(false); 
-	         }
-			
-				
-			}else if(category.equals("fullHouse1") || category.equals("fullHouse2")) {
-		        if(category.equals("fullHouse1")) {
-		        	fullHouse1.setText(Integer.toString(100));
-		             fullHouse1.setEnabled(false); 
-		         
-		           
-		         }else {
-		        	 fullHouse2.setText(Integer.toString(100));
-		             fullHouse2.setEnabled(false); 
-		         }
-		         
-			}else if(category.equals("fourOfAKind1") || category.equals("fourOfAKind2")) {
-			 	if(category.equals("fourOfAKind1")) {
-				fourOfAKind1.setText(Integer.toString(100));
-	             fourOfAKind1.setEnabled(false); 
-	           
-	         }else {
-	        	 fourOfAKind2.setText(Integer.toString(100));
-	             fourOfAKind2.setEnabled(false); 
-	         }
-				
-			}else if(category.equals("smStraight1") || category.equals("smStraight2")) {
-		         if(category.equals("smStraight1")) {
-		        	 if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4)) {
-		        	
-		        		 smStraight1.setText("30");
-		        		 lowerSectionTotal1.add(30);
-		        		 smStraight1.setEnabled(false);	 
-		        		 selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        		 
-		        	 }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {        		
-		        		 smStraight1.setText("30");
-		        		 lowerSectionTotal1.add(30);
-				         smStraight1.setEnabled(false);	
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		 
-		        	 }else if(diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
-		        		
-		        		 smStraight1.setText("30");
-		        		 lowerSectionTotal1.add(30);
-				         smStraight1.setEnabled(false);	
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }else {
-		        		 smStraight1.setText("0");
-				         smStraight1.setEnabled(false);
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		    
-		        	 }
-		        	
-		           
-		         }else {
-		        	 if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4)) {
-			        		
-		        		 smStraight2.setText("30");
-		        		 lowerSectionTotal2.add(30);
-		        		 smStraight2.setEnabled(false);	
-		        		 selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        		 
-		        	 }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
-		        		
-		        		 smStraight2.setText("30");
-		        		 lowerSectionTotal2.add(30);
-				         smStraight2.setEnabled(false);
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-		 
-		        	 }else if(diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
-		        		
-		        		 smStraight2.setText("30");
-		        		 lowerSectionTotal2.add(30);
-				         smStraight2.setEnabled(false);	
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-				         
-		        	 }else {
-		        		 smStraight2.setText("0");
-				         smStraight2.setEnabled(false);	
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }
-		         }
-		         
-		       }else if(category.equals("lgStraight1") || category.equals("lgStraight2")) {
-		         if(category.equals("lgStraight1")) {
-		        	 if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
-		        		 lgStraight1.setText("40");
-		        		 lowerSectionTotal1.add(40);
-				         lgStraight1.setEnabled(false);
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
-		        		 lgStraight1.setText("40");
-		        		 lowerSectionTotal1.add(40);
-				         lgStraight1.setEnabled(false);
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }else {
-		        		 lgStraight1.setText("0");
-				         lgStraight1.setEnabled(false);	
-				         selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }
-		         }else {
-		        	 if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
-		        		 lgStraight2.setText("40");
-		        		 lowerSectionTotal2.add(40);
-				         lgStraight2.setEnabled(false);
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
-		        		 lgStraight2.setText("40");
-		        		 lowerSectionTotal2.add(40);
-				         lgStraight2.setEnabled(false);
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }else {
-		        		 lgStraight2.setText("0");
-				         lgStraight2.setEnabled(false);
-				         selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }
-		           
-		         }
-		         
-		       }else if(category.equals("chance1") || category.equals("chance2")) {
-		           int sum = 0;
-		           if(category.equals("chance1")) {
-		             for(int i = 0 ; i < diceFaces.size(); i++){
-		               sum += diceFaces.get(i);
-		             }
-		             chance1.setText(Integer.toString(sum));
-		             chance1.setEnabled(false);
-		             lowerSectionTotal1.add(sum);
-		             selectedCategory1 = true;
-			         selectedCategory2 = false;
-		           }else {
-		             for(int i = 0 ; i < diceFaces.size(); i++){
-		               sum += diceFaces.get(i);
-		               }
-		             chance2.setText(Integer.toString(sum));
-		             chance2.setEnabled(false);
-		             lowerSectionTotal2.add(sum);
-		             selectedCategory1 = false;
-			         selectedCategory2 = true;
-		           }
-		       }else if(category.equals("yahtzee1") || category.equals("yahtzee2")) {
-		         if(category.equals("yahtzee1")) {
-		        	 int isEqual = 0;
-		        	 for(int i = 0; i < diceFaces.size()-1; i++) {
-		        		 if(diceFaces.get(i) == diceFaces.get(i+1)) {
-		        			 isEqual++;
-		        		 }
-		        	 }
-		        	 System.out.println(isEqual);
-		        	 if(isEqual == 4) {
-		        		 yahtzee1.setText("50");
-		        		 lowerSectionTotal1.add(50);
-		        		 yahtzee1.setEnabled(false);
-		        		 selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }else {
-		        		 yahtzee1.setText("0");
-		        		 yahtzee1.setEnabled(false);
-		        		 selectedCategory1 = true;
-				         selectedCategory2 = false;
-		        	 }
-		          /* yahtzeeTimes1++;
-		           if(yahtzeeTimes1 > 1) {
-		             JOptionPane.showMessageDialog(null, "You rolled another Yahtzee! 100 point bonus!", "YAHTZEE!", 1);
-		             int newPointValue = Integer.parseInt(yahtzee1.getText()) + 100;
-		             yahtzee1.setText(Integer.toString(newPointValue));
-		           }*/
-		           
-		         }else {
-		        	 int isEqual = 0;
-		        	 for(int i = 0; i < diceFaces.size()-1; i++) {
-		        		 if(diceFaces.get(i) == diceFaces.get(i+1)) {
-		        			 isEqual++;
-		        		 }
-		        	 }
-		        	 if(isEqual == 4) {
-		        		 yahtzee2.setText("50");
-		        		 lowerSectionTotal2.add(30);
-		        		 yahtzee2.setEnabled(false);
-		        		 selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }else {
-		        		 yahtzee2.setText("0");
-		        		 yahtzee2.setEnabled(false);
-		        		 selectedCategory1 = false;
-				         selectedCategory2 = true;
-		        	 }
-		        	/* yahtzeeTimes2++;
-		           	if(yahtzeeTimes2 > 1) {
-		             JOptionPane.showMessageDialog(null, "You rolled another Yahtzee! 100 point bonus!", "YAHTZEE!", 1);
-		             int newPointValue = Integer.parseInt(yahtzee2.getText()) + 100;
-		             yahtzee2.setText(Integer.toString(newPointValue));
-		           }*/
-		           
-		         }
-		         
-		       }
-				int bonus1 = 0;
-				int bonus2 = 0;
-				if((!(aces1.isEnabled()))&&(!(twos1.isEnabled()))&&(!(threes1.isEnabled()))&&(!(fours1.isEnabled()))&&(!(fives1.isEnabled()))&&(!(sixes1.isEnabled()))){
-					for(int i = 0; i < upperSectionTotal1.size(); i++) {
-						playerOneScore += upperSectionTotal1.get(i);
-					}
-					sumUpper1.setText(Integer.toString(playerOneScore));
-					if(playerOneScore >= 63) {
-						bonusSum1.setText("35");
-						bonus1 = 35;
-					}else {
-						bonusSum1.setText("0");	
-					}
-				
-				}
-				if((!(aces2.isEnabled()))&&(!(twos2.isEnabled()))&&(!(threes2.isEnabled()))&&(!(fours2.isEnabled()))&&(!(fives2.isEnabled()))&&(!(sixes2.isEnabled()))){
-					for(int i = 0; i < upperSectionTotal2.size(); i++) {
-						playerTwoScore += upperSectionTotal2.get(i);
-					}
-					sumUpper2.setText(Integer.toString(playerTwoScore));
-					if(playerTwoScore >= 63) {
-						bonusSum2.setText("35");
-						bonus2 = 35;
-					}else {
-						bonusSum2.setText("0");	
-					}
-				}
-				
-				int totalSum1 = 0;
-				int totalSum2 = 0;
-				boolean gameOver1 = false;
-				boolean gameOver2 = false;
-				
-				if((!(threeOfAKind1.isEnabled())) && (!(fourOfAKind1.isEnabled())) && (!(fullHouse1.isEnabled())) && (!(smStraight1.isEnabled())) && (!(lgStraight1.isEnabled())) && (!(chance1.isEnabled())) && (!(yahtzee1.isEnabled()))) {
-					for(int i = 0; i < lowerSectionTotal1.size(); i++) {
-						totalSum1 += lowerSectionTotal1.get(i);
-					}
-					totalSum1 += playerOneScore + bonus1;
-					totalSumLower1.setText(Integer.toString(totalSum1));
-					gameOver1 = true;
-				}
-				
-				if((!(threeOfAKind2.isEnabled())) && (!(fourOfAKind2.isEnabled())) && (!(fullHouse2.isEnabled())) && (!(smStraight2.isEnabled())) && (!(lgStraight2.isEnabled())) && (!(chance2.isEnabled())) && (!(yahtzee2.isEnabled()))) {
-					for(int i = 0; i < lowerSectionTotal2.size(); i++) {
-						totalSum2 += lowerSectionTotal2.get(i);
-					}
-					totalSum2 += playerTwoScore + bonus2;
-					totalSumLower2.setText(Integer.toString(totalSum2));
-					gameOver2 = true;
-				}
-			
-			if(selectedCategory1) {
-				p1.setEnabled(false);
-			}else {
-				p1.setEnabled(true);
-			}
-			
-			if(selectedCategory2) {
-				p2.setEnabled(false);
-			}else {
-				p2.setEnabled(true);
-			}
-			
-			if(gameOver1 && gameOver2) {
-				//if player one wins
-				if(Integer.parseInt(totalSumLower1.getText()) > Integer.parseInt(totalSumLower2.getText())) {
-					JOptionPane.showMessageDialog(null, "Player 1 wins!", "Game Over", 1);	
-				}else if(Integer.parseInt(totalSumLower1.getText()) < Integer.parseInt(totalSumLower2.getText())) { //if player two wins
-					JOptionPane.showMessageDialog(null, "Player 2 wins!", "Game Over", 1);	
-				}else { //if tie
-					JOptionPane.showMessageDialog(null, "Tie!", "Game Over", 1);	
-				}
-			}
-    	
-		}
+ @Override
+ public void actionPerformed(ActionEvent e) {
+ 
+ if(category.equals("aces1") || category.equals("aces2")){
+ int sumToDisplay = 0;
+ if(category.equals("aces1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 1) {
+            sumToDisplay++;
+            }
+           }
+           aces1.setText(Integer.toString(sumToDisplay));
+           aces1.setEnabled(false);
+           selectedCategory1 = true;
+           selectedCategory2 = false;
+           upperSectionTotal1.add(sumToDisplay);
+    
+       
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 1) {
+            sumToDisplay++;
+            }
+ }
+           aces2.setText(Integer.toString(sumToDisplay));
+           upperSectionTotal2.add(sumToDisplay);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+           aces2.setEnabled(false);
+ }
+ }else if(category.equals("twos1") || category.equals("twos2")) {
+ int sumToDisplay = 0;
+ if(category.equals("twos1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 2) {
+            sumToDisplay += 2;
+            }
+           }
+      twos1.setText(Integer.toString(sumToDisplay));
+      twos1.setEnabled(false);
+      upperSectionTotal1.add(sumToDisplay);
+      selectedCategory1 = true;
+          selectedCategory2 = false;
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 2) {
+            sumToDisplay += 2;
+            }
+ }
+           twos2.setText(Integer.toString(sumToDisplay));
+           upperSectionTotal2.add(sumToDisplay);
+           twos2.setEnabled(false);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+ }
+ }else if(category.equals("threes1") || category.equals("threes2")) {
+ int sumToDisplay = 0;
+ if(category.equals("threes1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 3) {
+            sumToDisplay += 3;
+            }
+           }
+      threes1.setText(Integer.toString(sumToDisplay));
+      threes1.setEnabled(false);
+      upperSectionTotal1.add(sumToDisplay);
+      selectedCategory1 = true;
+          selectedCategory2 = false;
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 3) {
+            sumToDisplay += 3;
+            }
+ }
+           threes2.setText(Integer.toString(sumToDisplay));
+           threes2.setEnabled(false);
+           upperSectionTotal2.add(sumToDisplay);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+ }
+ }else if(category.equals("fours1") || category.equals("fours2")) {
+ int sumToDisplay = 0;
+ if(category.equals("fours1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 4) {
+            sumToDisplay += 4;
+            }
+           }
+      fours1.setText(Integer.toString(sumToDisplay));
+      fours1.setEnabled(false);
+      upperSectionTotal1.add(sumToDisplay);
+      selectedCategory1 = true;
+          selectedCategory2 = false;
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 4) {
+            sumToDisplay += 4;
+            }
+ }
+           fours2.setText(Integer.toString(sumToDisplay));
+           fours2.setEnabled(false);
+           upperSectionTotal2.add(sumToDisplay);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+ }
+ }else if(category.equals("fives1") || category.equals("fives2")) {
+ int sumToDisplay = 0;
+ if(category.equals("fives1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 5) {
+            sumToDisplay += 5;
+            }
+           }
+      fives1.setText(Integer.toString(sumToDisplay));
+      fives1.setEnabled(false);
+      upperSectionTotal1.add(sumToDisplay);
+      selectedCategory1 = true;
+          selectedCategory2 = false;
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 5) {
+            sumToDisplay += 5;
+            }
+ }
+           fives2.setText(Integer.toString(sumToDisplay));
+           fives2.setEnabled(false);
+           upperSectionTotal2.add(sumToDisplay);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+ }
+ }else if(category.equals("sixes1") || category.equals("sixes2")) {
+ int sumToDisplay = 0;
+ if(category.equals("sixes1")){
+           for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 6) {
+            sumToDisplay += 6;
+            }
+           }
+      sixes1.setText(Integer.toString(sumToDisplay));
+      sixes1.setEnabled(false);
+      upperSectionTotal1.add(sumToDisplay);
+      selectedCategory1 = true;
+          selectedCategory2 = false;
+ }else {
+ for(int i = 0; i < diceFaces.size(); i++) {
+            if(diceFaces.get(i) == 6) {
+            sumToDisplay += 6;
+            }
+ }
+           sixes2.setText(Integer.toString(sumToDisplay));
+           sixes2.setEnabled(false);
+           upperSectionTotal2.add(sumToDisplay);
+           selectedCategory1 = false;
+           selectedCategory2 = true;
+ } 
+ }else if(category.equals("threeOfAKind1") || category.equals("threeOfAKind2")) {
+ if(category.equals("threeOfAKind1")) {
+            int sumToDisplay = 0;
+      
+               int[] nums = new int[7];
+               
+               for(int i=0; i<5; i++){
+                nums[diceFaces.get(i)-1]++;
+               }
+               
+               if(nums[0] >=3 ||nums[1] >=3 ||nums[2] >=3 ||nums[3] >=3 ||nums[4] >=3 ||nums[5] >=3 ){
+                sumToDisplay = diceFaces.get(0)+diceFaces.get(1)+diceFaces.get(2)+diceFaces.get(3)+diceFaces.get(4);
+               }
+               
+                threeOfAKind1.setText(Integer.toString(sumToDisplay));
+                threeOfAKind1.setEnabled(false);
+                selectedCategory1 = true;
+             selectedCategory2 = false;
+               
+            }else {
+             int sumToDisplay = 0;
+                
+             die1++;
+                die2++;
+                die3++;
+                die4++;
+                die5++;
+             
+                int[] nums = new int[7];
+                
+                for(int i=0; i<5; i++){
+                 nums[diceFaces.get(i)-1]++;
+                }
+                
+                if(nums[0] >= 3 ||nums[1] >=3 ||nums[2] >=3 ||nums[3] >=3 ||nums[4] >=3 ||nums[5] >=3 ){
+                 sumToDisplay = diceFaces.get(0)+diceFaces.get(1)+diceFaces.get(2)+diceFaces.get(3)+diceFaces.get(4);
+                }
+                
+                 threeOfAKind2.setText(Integer.toString(sumToDisplay));
+                 threeOfAKind2.setEnabled(false);
+                 selectedCategory1 = false;
+              selectedCategory2 = true;
+                
+            }
+ 
+ }else if(category.equals("fullHouse1") || category.equals("fullHouse2")) {
+  if(category.equals("fullHouse1")) {
+            int sumToDisplay = 0;
+           
+           if(
+             ((die1==die2 && die1==die3) && (die4==die5))||
+             ((die1==die2 && die1==die4) && (die3==die5))||
+             ((die1==die2 && die1==die5) && (die3==die4))||
+             
+             ((die1==die3 && die1==die4) && (die2==die5))||
+             ((die1==die3 && die1==die5) && (die2==die4))||
+             
+             ((die1==die4 && die1==die5) && (die2==die3))||
+             
+    
+             ((die2==die3 && die2==die4) && (die1==die5))||
+             ((die2==die3 && die2==die5) && (die1==die4))||
+             
+             ((die2==die4 && die2==die5) && (die1==die3))||
+             
+             
+             ((die3==die4 && die3==die5) && (die1==die2))
+             ){
+               sumToDisplay = 25;
+             }
+           
+           
+           fullHouse1.setText(Integer.toString(sumToDisplay));
+           fullHouse1.setEnabled(false);
+           selectedCategory1 = true;
+         selectedCategory2 = false;
+           
+         }else {
+            int sumToDisplay = 0;
+           
+           if(
+             ((die1==die2 && die1==die3) && (die4==die5))||
+             ((die1==die2 && die1==die4) && (die3==die5))||
+             ((die1==die2 && die1==die5) && (die3==die4))||
+             
+             ((die1==die3 && die1==die4) && (die2==die5))||
+             ((die1==die3 && die1==die5) && (die2==die4))||
+             
+             ((die1==die4 && die1==die5) && (die2==die3))||
+    
+             ((die2==die3 && die2==die4) && (die1==die5))||
+             ((die2==die4 && die2==die5) && (die1==die2))||
+             
+             ((die3==die4 && die3==die5) && (die1==die2))
+             ){
+               sumToDisplay = 25;
+             }
+           
+           
+           fullHouse2.setText(Integer.toString(sumToDisplay));
+           fullHouse2.setEnabled(false);
+           selectedCategory1 = false;
+          selectedCategory2 = true;
+         }
+ }else if(category.equals("fourOfAKind1") || category.equals("fourOfAKind2")) {
+   if(category.equals("fourOfAKind1")) {
+             int sumToDisplay = 0;
+           
+            int[] nums = new int[7];
+            
+            for(int i=0; i<5; i++){
+             nums[diceFaces.get(i)-1]++;
+            }
+            
+            if(nums[0] >=4 ||nums[1] >=4 ||nums[2] >=4 ||nums[3] >=4 ||nums[4] >=4 ||nums[5] >=4 ){
+             sumToDisplay = diceFaces.get(0)+diceFaces.get(1)+diceFaces.get(2)+diceFaces.get(3)+diceFaces.get(4);
+            }
+            
+             fourOfAKind1.setText(Integer.toString(sumToDisplay));
+             fourOfAKind1.setEnabled(false);
+             selectedCategory1 = true;
+          selectedCategory2 = false;
+            
+          }else {
+        
+           int sumToDisplay = 0;
+              
+              int[] nums = new int[7];
+              
+              for(int i=0; i<5; i++){
+               nums[diceFaces.get(i)-1]++;
+              }
+              
+              if(nums[0] >=4 ||nums[1] >=4 ||nums[2] >=4 ||nums[3] >=4 ||nums[4] >=4 ||nums[5] >=4 ){
+               sumToDisplay = diceFaces.get(0)+diceFaces.get(1)+diceFaces.get(2)+diceFaces.get(3)+diceFaces.get(4);
+              }
+              
+               fourOfAKind2.setText(Integer.toString(sumToDisplay));
+               fourOfAKind2.setEnabled(false);
+               selectedCategory1 = false;
+            selectedCategory2 = true;
+               
+              
+          }
+          
+   
+ 
+ }else if(category.equals("smStraight1") || category.equals("smStraight2")) {
+          if(category.equals("smStraight1")) {
+           if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4)) {
+          
+           smStraight1.setText("30");
+           lowerSectionTotal1.add(30);
+           smStraight1.setEnabled(false);  
+           selectedCategory1 = true;
+          selectedCategory2 = false;
+           
+           }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {         
+           smStraight1.setText("30");
+           lowerSectionTotal1.add(30);
+          smStraight1.setEnabled(false); 
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+  
+           }else if(diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
+          
+           smStraight1.setText("30");
+           lowerSectionTotal1.add(30);
+          smStraight1.setEnabled(false); 
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+           }else {
+           smStraight1.setText("0");
+          smStraight1.setEnabled(false);
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+     
+           }
+          
+            
+          }else {
+           if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4)) {
+          
+           smStraight2.setText("30");
+           lowerSectionTotal2.add(30);
+           smStraight2.setEnabled(false); 
+           selectedCategory1 = false;
+          selectedCategory2 = true;
+           
+           }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
+          
+           smStraight2.setText("30");
+           lowerSectionTotal2.add(30);
+          smStraight2.setEnabled(false);
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+  
+           }else if(diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
+          
+           smStraight2.setText("30");
+           lowerSectionTotal2.add(30);
+          smStraight2.setEnabled(false); 
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+          
+           }else {
+           smStraight2.setText("0");
+          smStraight2.setEnabled(false); 
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+           }
+          }
+          
+        }else if(category.equals("lgStraight1") || category.equals("lgStraight2")) {
+          if(category.equals("lgStraight1")) {
+           if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
+           lgStraight1.setText("40");
+           lowerSectionTotal1.add(40);
+          lgStraight1.setEnabled(false);
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+           }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
+           lgStraight1.setText("40");
+           lowerSectionTotal1.add(40);
+          lgStraight1.setEnabled(false);
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+           }else {
+           lgStraight1.setText("0");
+          lgStraight1.setEnabled(false); 
+          selectedCategory1 = true;
+          selectedCategory2 = false;
+           }
+          }else {
+           if(diceFaces.contains(1) && diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5)) {
+           lgStraight2.setText("40");
+           lowerSectionTotal2.add(40);
+          lgStraight2.setEnabled(false);
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+           }else if(diceFaces.contains(2) && diceFaces.contains(3) && diceFaces.contains(4) && diceFaces.contains(5) && diceFaces.contains(6)) {
+           lgStraight2.setText("40");
+           lowerSectionTotal2.add(40);
+          lgStraight2.setEnabled(false);
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+           }else {
+           lgStraight2.setText("0");
+          lgStraight2.setEnabled(false);
+          selectedCategory1 = false;
+          selectedCategory2 = true;
+           }
+            
+          }
+          
+        }else if(category.equals("chance1") || category.equals("chance2")) {
+            int sum = 0;
+            if(category.equals("chance1")) {
+              for(int i = 0 ; i < diceFaces.size(); i++){
+                sum += diceFaces.get(i);
+              }
+              chance1.setText(Integer.toString(sum));
+              chance1.setEnabled(false);
+              lowerSectionTotal1.add(sum);
+              selectedCategory1 = true;
+          selectedCategory2 = false;
+            }else {
+              for(int i = 0 ; i < diceFaces.size(); i++){
+                sum += diceFaces.get(i);
+                }
+              chance2.setText(Integer.toString(sum));
+              chance2.setEnabled(false);
+              lowerSectionTotal2.add(sum);
+              selectedCategory1 = false;
+          selectedCategory2 = true;
+            }
+        }else if(category.equals("yahtzee1") || category.equals("yahtzee2")) {
+          if(category.equals("yahtzee1")) {
+           int isEqual = 0;
+           for(int i = 0; i < diceFaces.size()-1; i++) {
+           if(diceFaces.get(i) == diceFaces.get(i+1)) {
+           isEqual++;
+           }
+           }
+           System.out.println(isEqual);
+           if(isEqual == 4) {
+           yahtzee1.setText("50");
+           lowerSectionTotal1.add(50);
+           selectedCategory1 = true;
+          selectedCategory2 = false;
+           }else {
+           yahtzee1.setText("0");
+           selectedCategory1 = true;
+          selectedCategory2 = false;
+           }
+            
+          }else {
+           int isEqual = 0;
+           for(int i = 0; i < diceFaces.size()-1; i++) {
+           if(diceFaces.get(i) == diceFaces.get(i+1)) {
+           isEqual++;
+           }
+           }
+           if(isEqual == 4) {
+           yahtzee2.setText("50");
+           lowerSectionTotal2.add(30);
+           yahtzee2.setEnabled(false);
+           selectedCategory1 = false;
+          selectedCategory2 = true;
+           }else {
+           yahtzee2.setText("0");
+           yahtzee2.setEnabled(false);
+           selectedCategory1 = false;
+          selectedCategory2 = true;
+           }
+            
+          }
+          
+        }
+ int bonus1 = 0;
+ int bonus2 = 0;
+ if((!(aces1.isEnabled()))&&(!(twos1.isEnabled()))&&(!(threes1.isEnabled()))&&(!(fours1.isEnabled()))&&(!(fives1.isEnabled()))&&(!(sixes1.isEnabled()))){
+ for(int i = 0; i < upperSectionTotal1.size(); i++) {
+ playerOneScore += upperSectionTotal1.get(i);
+ }
+ sumUpper1.setText(Integer.toString(playerOneScore));
+ if(playerOneScore >= 63) {
+ bonusSum1.setText("35");
+ bonus1 = 35;
+ }else {
+ bonusSum1.setText("0"); 
+ }
+ 
+ }
+ if((!(aces2.isEnabled()))&&(!(twos2.isEnabled()))&&(!(threes2.isEnabled()))&&(!(fours2.isEnabled()))&&(!(fives2.isEnabled()))&&(!(sixes2.isEnabled()))){
+ for(int i = 0; i < upperSectionTotal2.size(); i++) {
+ playerTwoScore += upperSectionTotal2.get(i);
+ }
+ sumUpper2.setText(Integer.toString(playerTwoScore));
+ if(playerTwoScore >= 63) {
+ bonusSum2.setText("35");
+ bonus2 = 35;
+ }else {
+ bonusSum2.setText("0"); 
+ }
+ }
+ 
+ int totalSum1 = 0;
+ int totalSum2 = 0;
+ boolean gameOver1 = false;
+ boolean gameOver2 = false;
+ 
+ if((!(threeOfAKind1.isEnabled())) && (!(fourOfAKind1.isEnabled())) && (!(fullHouse1.isEnabled())) && (!(smStraight1.isEnabled())) && (!(lgStraight1.isEnabled())) && (!(chance1.isEnabled())) && (!(yahtzee1.isEnabled()))) {
+ for(int i = 0; i < lowerSectionTotal1.size(); i++) {
+ totalSum1 += lowerSectionTotal1.get(i);
+ }
+ totalSum1 += playerOneScore + bonus1;
+ totalSumLower1.setText(Integer.toString(totalSum1));
+ gameOver1 = true;
+ }
+ 
+ if((!(threeOfAKind2.isEnabled())) && (!(fourOfAKind2.isEnabled())) && (!(fullHouse2.isEnabled())) && (!(smStraight2.isEnabled())) && (!(lgStraight2.isEnabled())) && (!(chance2.isEnabled())) && (!(yahtzee2.isEnabled()))) {
+ for(int i = 0; i < lowerSectionTotal2.size(); i++) {
+ totalSum2 += lowerSectionTotal2.get(i);
+ }
+ totalSum2 += playerTwoScore + bonus2;
+ totalSumLower2.setText(Integer.toString(totalSum2));
+ gameOver2 = true;
+ }
+ 
+ if(selectedCategory1) { 
+ p1.setEnabled(false);
+ DiceRoll dr = new DiceRoll();
+ dr.actionPerformed(e);
+ player2.setForeground(new Color(133,33,36));
+ }else {
+ p1.setEnabled(true);
+ player2.setForeground(Color.WHITE);
+ }
+ 
+ if(selectedCategory2) {
+ p2.setEnabled(false);
+ DiceRoll dr = new DiceRoll();
+ dr.actionPerformed(e);
+ player1.setForeground(new Color(133,33,36));
+ }else {
+ p2.setEnabled(true);
+ player1.setForeground(Color.WHITE);
+ }
+ 
+ 
+ if(gameOver1 && gameOver2) {
+ //if player one wins
+ if(Integer.parseInt(totalSumLower1.getText()) > Integer.parseInt(totalSumLower2.getText())) {
+ JOptionPane.showMessageDialog(null, "Player 1 wins!", "Game Over", 1); 
+ }else if(Integer.parseInt(totalSumLower1.getText()) < Integer.parseInt(totalSumLower2.getText())) { //if player two wins
+ JOptionPane.showMessageDialog(null, "Player 2 wins!", "Game Over", 1); 
+ }else { //if tie
+ JOptionPane.showMessageDialog(null, "Tie!", "Game Over", 1); 
+ }
+ }
+   rollDice.setEnabled(true);
+   DiceRoll dr = new DiceRoll();
+   dr.rollDice();
+   timesPressed = 0;
+   rollsLeft.setText("Times Rolled: " + timesPressed);
+ }
     }
 }
-
